@@ -1,54 +1,3 @@
-// package medcare
-
-// import (
-// 	"net/http"
-
-// 	"github.com/gin-gonic/gin"
-// )
-
-// type AllergyRecordsAPI interface {
-// 	// internal registration of api routes
-// 	addRoutes(routerGroup *gin.RouterGroup)
-
-// 	// DeleteAllergyRecord - Delete an allergy record
-// 	DeleteAllergyRecord(ctx *gin.Context)
-
-// 	// GetAllAllergyRecords - Get all allergy records
-// 	GetAllAllergyRecords(ctx *gin.Context)
-
-// 	// GetAllergyRecordById - Get an allergy record by ID
-// 	GetAllergyRecordById(ctx *gin.Context)
-// }
-
-// // partial implementation of AllergyRecordsAPI - all functions must be implemented in add on files
-// type implAllergyRecordsAPI struct {
-// }
-
-// func newAllergyRecordsAPI() AllergyRecordsAPI {
-// 	return &implAllergyRecordsAPI{}
-// }
-
-// func (this *implAllergyRecordsAPI) addRoutes(routerGroup *gin.RouterGroup) {
-// 	routerGroup.Handle(http.MethodDelete, "/allergy-records/:recordId", this.DeleteAllergyRecord)
-// 	routerGroup.Handle(http.MethodGet, "/allergy-records", this.GetAllAllergyRecords)
-// 	routerGroup.Handle(http.MethodGet, "/allergy-records/:recordId", this.GetAllergyRecordById)
-// }
-
-// // DeleteAllergyRecord - Delete an allergy record
-// func (this *implAllergyRecordsAPI) DeleteAllergyRecord(ctx *gin.Context) {
-// 	ctx.AbortWithStatus(http.StatusNotImplemented)
-// }
-
-// // GetAllAllergyRecords - Get all allergy records
-// func (this *implAllergyRecordsAPI) GetAllAllergyRecords(ctx *gin.Context) {
-// 	ctx.AbortWithStatus(http.StatusNotImplemented)
-// }
-
-// // GetAllergyRecordById - Get an allergy record by ID
-// func (this *implAllergyRecordsAPI) GetAllergyRecordById(ctx *gin.Context) {
-// 	ctx.AbortWithStatus(http.StatusNotImplemented)
-// }
-
 package medcare
 
 import (
@@ -61,8 +10,30 @@ import (
 
 type implAllergyRecordsAPI struct{}
 
-// CreateAllergyRecord - Saves new allergy record
-func (this *implAllergyRecordsAPI) CreateAllergyRecord(ctx *gin.Context) {
+// AllergyRecordsAPI interface definition
+type AllergyRecordsAPI interface {
+	addRoutes(routerGroup *gin.RouterGroup)
+	CreateAllergyRecord(ctx *gin.Context)
+	GetAllAllergyRecords(ctx *gin.Context)
+	GetAllergyRecordById(ctx *gin.Context)
+	DeleteAllergyRecord(ctx *gin.Context)
+}
+
+// NewAllergyRecordsAPI constructor
+func NewAllergyRecordsAPI() AllergyRecordsAPI {
+	return &implAllergyRecordsAPI{}
+}
+
+// addRoutes implementation
+func (api *implAllergyRecordsAPI) addRoutes(routerGroup *gin.RouterGroup) {
+	routerGroup.POST("/allergy_records", api.CreateAllergyRecord)
+	routerGroup.GET("/allergy_records", api.GetAllAllergyRecords)
+	routerGroup.GET("/allergy_records/:recordId", api.GetAllergyRecordById)
+	routerGroup.DELETE("/allergy_records/:recordId", api.DeleteAllergyRecord)
+}
+
+// CreateAllergyRecord implementation
+func (api *implAllergyRecordsAPI) CreateAllergyRecord(ctx *gin.Context) {
 	value, exists := ctx.Get("allergy_db_service")
 	if !exists {
 		ctx.JSON(
@@ -133,8 +104,8 @@ func (this *implAllergyRecordsAPI) CreateAllergyRecord(ctx *gin.Context) {
 	}
 }
 
-// GetAllAllergyRecords - Get all allergy records
-func (this *implAllergyRecordsAPI) GetAllAllergyRecords(ctx *gin.Context) {
+// GetAllAllergyRecords implementation
+func (api *implAllergyRecordsAPI) GetAllAllergyRecords(ctx *gin.Context) {
 	value, exists := ctx.Get("allergy_db_service")
 	if !exists {
 		ctx.JSON(
@@ -175,8 +146,8 @@ func (this *implAllergyRecordsAPI) GetAllAllergyRecords(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, records)
 }
 
-// GetAllergyRecordById - Get allergy record by ID
-func (this *implAllergyRecordsAPI) GetAllergyRecordById(ctx *gin.Context) {
+// GetAllergyRecordById implementation
+func (api *implAllergyRecordsAPI) GetAllergyRecordById(ctx *gin.Context) {
 	value, exists := ctx.Get("allergy_db_service")
 	if !exists {
 		ctx.JSON(
@@ -218,8 +189,8 @@ func (this *implAllergyRecordsAPI) GetAllergyRecordById(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, record)
 }
 
-// DeleteAllergyRecord - Delete an allergy record
-func (this *implAllergyRecordsAPI) DeleteAllergyRecord(ctx *gin.Context) {
+// DeleteAllergyRecord implementation
+func (api *implAllergyRecordsAPI) DeleteAllergyRecord(ctx *gin.Context) {
 	value, exists := ctx.Get("allergy_db_service")
 	if !exists {
 		ctx.JSON(
@@ -259,12 +230,4 @@ func (this *implAllergyRecordsAPI) DeleteAllergyRecord(ctx *gin.Context) {
 	}
 
 	ctx.Status(http.StatusNoContent)
-}
-
-// addRoutes - Adds routes for allergy records API
-func (api *implAllergyRecordsAPI) addRoutes(group *gin.RouterGroup) {
-	group.POST("/allergy_records", api.CreateAllergyRecord)
-	group.GET("/allergy_records", api.GetAllAllergyRecords)
-	group.GET("/allergy_records/:recordId", api.GetAllergyRecordById)
-	group.DELETE("/allergy_records/:recordId", api.DeleteAllergyRecord)
 }

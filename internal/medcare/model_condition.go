@@ -5,8 +5,8 @@ type Condition struct {
 
 	Code string `json:"code,omitempty"`
 
-	// Link to encyclopedical explanation of the patient's condition
-	string `json:"reference,omitempty"`
+	// Link to encyclopedic explanation of the patient's condition
+	Reference string `json:"reference,omitempty"`
 
 	TypicalDurationMinutes int32 `json:"typicalDurationMinutes,omitempty"`
 }
