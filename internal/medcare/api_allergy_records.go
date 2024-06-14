@@ -16,7 +16,7 @@ type AllergyRecordsAPI interface {
 	CreateAllergyRecord(ctx *gin.Context)
 	GetAllAllergyRecords(ctx *gin.Context)
 	GetAllergyRecordById(ctx *gin.Context)
-	DeleteAllergyRecord(ctx *gin.Context)
+	// DeleteAllergyRecord(ctx *gin.Context)
 }
 
 // NewAllergyRecordsAPI constructor
@@ -29,7 +29,7 @@ func (api *implAllergyRecordsAPI) addRoutes(routerGroup *gin.RouterGroup) {
 	routerGroup.POST("/allergy_records", api.CreateAllergyRecord)
 	routerGroup.GET("/allergy_records", api.GetAllAllergyRecords)
 	routerGroup.GET("/allergy_records/:recordId", api.GetAllergyRecordById)
-	routerGroup.DELETE("/allergy_records/:recordId", api.DeleteAllergyRecord)
+	// routerGroup.DELETE("/allergy_records/:recordId", api.DeleteAllergyRecord)
 }
 
 // CreateAllergyRecord implementation
@@ -189,45 +189,45 @@ func (api *implAllergyRecordsAPI) GetAllergyRecordById(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, record)
 }
 
-// DeleteAllergyRecord implementation
-func (api *implAllergyRecordsAPI) DeleteAllergyRecord(ctx *gin.Context) {
-	value, exists := ctx.Get("allergy_db_service")
-	if !exists {
-		ctx.JSON(
-			http.StatusInternalServerError,
-			gin.H{
-				"status":  "Internal Server Error",
-				"message": "db not found",
-				"error":   "db not found",
-			})
-		return
-	}
+// // DeleteAllergyRecord implementation
+// func (api *implAllergyRecordsAPI) DeleteAllergyRecord(ctx *gin.Context) {
+// 	value, exists := ctx.Get("allergy_db_service")
+// 	if !exists {
+// 		ctx.JSON(
+// 			http.StatusInternalServerError,
+// 			gin.H{
+// 				"status":  "Internal Server Error",
+// 				"message": "db not found",
+// 				"error":   "db not found",
+// 			})
+// 		return
+// 	}
 
-	db, ok := value.(db_service.DbService[AllergyRecord])
-	if !ok {
-		ctx.JSON(
-			http.StatusInternalServerError,
-			gin.H{
-				"status":  "Internal Server Error",
-				"message": "db context is not of required type",
-				"error":   "cannot cast db context to db_service.DbService",
-			})
-		return
-	}
+// 	db, ok := value.(db_service.DbService[AllergyRecord])
+// 	if !ok {
+// 		ctx.JSON(
+// 			http.StatusInternalServerError,
+// 			gin.H{
+// 				"status":  "Internal Server Error",
+// 				"message": "db context is not of required type",
+// 				"error":   "cannot cast db context to db_service.DbService",
+// 			})
+// 		return
+// 	}
 
-	recordId := ctx.Param("recordId")
-	err := db.DeleteDocument(ctx, recordId)
-	if err != nil {
-		ctx.JSON(
-			http.StatusNotFound,
-			gin.H{
-				"status":  "Not Found",
-				"message": "Allergy record not found",
-				"error":   err.Error(),
-			},
-		)
-		return
-	}
+// 	recordId := ctx.Param("recordId")
+// 	err := db.DeleteDocument(ctx, recordId)
+// 	if err != nil {
+// 		ctx.JSON(
+// 			http.StatusNotFound,
+// 			gin.H{
+// 				"status":  "Not Found",
+// 				"message": "Allergy record not found",
+// 				"error":   err.Error(),
+// 			},
+// 		)
+// 		return
+// 	}
 
-	ctx.Status(http.StatusNoContent)
-}
+// 	ctx.Status(http.StatusNoContent)
+// }
