@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/DanielCok17/medcare-webapi/api"
-	"github.com/DanielCok17/medcare-webapi/api/internal/medcare"
+	"github.com/DanielCok17/medcare-webapi/internal/medcare"
 	"github.com/gin-gonic/gin"
 )
 
