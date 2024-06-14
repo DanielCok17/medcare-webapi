@@ -1,0 +1,10 @@
+internal/medcare_api/README.md
+internal/medcare_api/api_allergy_records.go
+internal/medcare_api/api_lab_results.go
+internal/medcare_api/api_medical_records.go
+internal/medcare_api/api_vaccination_records.go
+internal/medcare_api/model_allergy_record.go
+internal/medcare_api/model_lab_result.go
+internal/medcare_api/model_medical_record.go
+internal/medcare_api/model_vaccination_record.go
+internal/medcare_api/routers.go

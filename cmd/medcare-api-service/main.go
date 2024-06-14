@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/DanielCok17/medcare-webapi/api"
+	"github.com/DanielCok17/medcare-webapi/api/internal/medcare_api"
 	"github.com/gin-gonic/gin"
 )
 
@@ -22,6 +23,7 @@ func main() {
 	engine := gin.New()
 	engine.Use(gin.Recovery())
 	// request routings
+	medcare_api.AddRoutes(engine)
 	engine.GET("/openapi", api.HandleOpenApi)
 	engine.Run(":" + port)
 }
