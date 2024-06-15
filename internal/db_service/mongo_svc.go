@@ -68,13 +68,13 @@ func NewMongoService[DocType interface{}](config MongoServiceConfig) DbService[D
 		}
 	}
 
-	// if svc.UserName == "" {
-	// 	svc.UserName = enviro("AMBULANCE_API_MONGODB_USERNAME", "")
-	// }
+	if svc.UserName == "" {
+		svc.UserName = enviro("AMBULANCE_API_MONGODB_USERNAME", "")
+	}
 
-	// if svc.Password == "" {
-	// 	svc.Password = enviro("AMBULANCE_API_MONGODB_PASSWORD", "")
-	// }
+	if svc.Password == "" {
+		svc.Password = enviro("AMBULANCE_API_MONGODB_PASSWORD", "")
+	}
 
 	if svc.DbName == "" {
 		svc.DbName = enviro("AMBULANCE_API_MONGODB_DATABASE", "medcare-db")
