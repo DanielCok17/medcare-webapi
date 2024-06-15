@@ -18,7 +18,7 @@ while (true) {
         break;
     } catch (exception) {
         print(`Cannot connect to mongoDB: ${exception}`);
-        print(`mongodb://${mongoHost}:${mongoPort}`)
+        print(`mongodb://${mongoUser}:${mongoPassword}@${mongoHost}:${mongoPort}`)
         print(`Will retry after ${retrySeconds} seconds`)
         sleep(retrySeconds * 1000);
     }
