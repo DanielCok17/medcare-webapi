@@ -20,18 +20,18 @@ spec:
                 configMapKeyRef:
                   name: mongodb-connection
                   key: port
-            - name: AMBULANCE_API_MONGODB_USERNAME
-              value: null
-              valueFrom:
-                secretKeyRef:
-                  name: mongodb-auth
-                  key: username
-            - name: AMBULANCE_API_MONGODB_PASSWORD
-              value: null
-              valueFrom:
-                secretKeyRef:
-                  name: mongodb-auth
-                  key: password
+            # - name: AMBULANCE_API_MONGODB_USERNAME
+            #   value: null
+            #   valueFrom:
+            #     secretKeyRef:
+            #       name: mongodb-auth
+            #       key: username
+            # - name: AMBULANCE_API_MONGODB_PASSWORD
+            #   value: null
+            #   valueFrom:
+            #     secretKeyRef:
+            #       name: mongodb-auth
+            #       key: password
       containers:
         - name: medcare-ambulance-wl-webapi-container
           env:
@@ -47,15 +47,15 @@ spec:
                 configMapKeyRef:
                   name: mongodb-connection
                   key: port
-            - name: AMBULANCE_API_MONGODB_USERNAME
-              value: null
-              valueFrom:
-                secretKeyRef:
-                  name: mongodb-auth
-                  key: username
-            - name: AMBULANCE_API_MONGODB_PASSWORD
-              value: null
-              valueFrom:
-                secretKeyRef:
-                  name: mongodb-auth
-                  key: password
+            # - name: AMBULANCE_API_MONGODB_USERNAME
+            #   value: null
+            #   valueFrom:
+            #     secretKeyRef:
+            #       name: mongodb-auth
+            #       key: username
+            # - name: AMBULANCE_API_MONGODB_PASSWORD
+            #   value: null
+            #   valueFrom:
+            #     secretKeyRef:
+            #       name: mongodb-auth
+            #       key: password
