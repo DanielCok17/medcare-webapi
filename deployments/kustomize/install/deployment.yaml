@@ -154,15 +154,9 @@ spec:
         - name: AMBULANCE_API_MONGODB_PORT
           value: "27017"
         - name: AMBULANCE_API_MONGODB_USERNAME
-          valueFrom:
-            secretKeyRef:
-              name: mongodb-auth
-              key: username
+          value: ""
         - name: AMBULANCE_API_MONGODB_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: mongodb-auth
-              key: password
+          value: ""
         - name: AMBULANCE_API_MONGODB_DATABASE
           valueFrom:
             configMapKeyRef:
@@ -198,16 +192,12 @@ spec:
           value: mongodb
         - name: AMBULANCE_API_MONGODB_PORT
           value: "27017"
+         # change to actual value
         - name: AMBULANCE_API_MONGODB_USERNAME
-          valueFrom:
-            secretKeyRef:
-              name: mongodb-auth
-              key: username
+          value: ""
+          #change to actual value
         - name: AMBULANCE_API_MONGODB_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: mongodb-auth
-              key: password
+          value: ""
         - name: AMBULANCE_API_MONGODB_DATABASE
           valueFrom:
             configMapKeyRef:
