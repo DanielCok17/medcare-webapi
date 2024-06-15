@@ -120,7 +120,7 @@ func main() {
 
 	// Setup the database service with the correct collection names
 	config := db_service.MongoServiceConfig{
-		UserName: os.Getenv("AMBULANCE_API_MONGODB_USERNAME"), // replace with your actual username
+		UserName: os.Getenv("AMBULANCE_API_MONGODB_USERNAME"), // replace with your actual username pls nech to ide
 		Password: os.Getenv("AMBULANCE_API_MONGODB_PASSWORD"), // replace with your actual password
 		DbName:   os.Getenv("AMBULANCE_API_MONGODB_DATABASE"),
 		Collections: map[string]string{
