@@ -38,6 +38,76 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/MedicalRecord"
+    post:
+      tags:
+        - medicalRecords
+      summary: Create a new medical record
+      operationId: createMedicalRecord
+      description: Add a new medical record
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MedicalRecord"
+      responses:
+        "201":
+          description: Medical record created
+        "400":
+          description: Invalid input
+  /medical-records/{recordId}:
+    parameters:
+      - in: path
+        name: recordId
+        required: true
+        schema:
+          type: string
+    get:
+      tags:
+        - medicalRecords
+      summary: Get medical record by ID
+      operationId: getMedicalRecordById
+      description: Retrieve a specific medical record by its ID
+      responses:
+        "200":
+          description: Medical record details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MedicalRecord"
+        "404":
+          description: Medical record not found
+    put:
+      tags:
+        - medicalRecords
+      summary: Update a medical record
+      operationId: updateMedicalRecord
+      description: Update a specific medical record by its ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MedicalRecord"
+      responses:
+        "200":
+          description: Medical record updated
+        "400":
+          description: Invalid input
+        "404":
+          description: Medical record not found
+    delete:
+      tags:
+        - medicalRecords
+      summary: Delete a medical record
+      operationId: deleteMedicalRecord
+      description: Remove a specific medical record by its ID
+      responses:
+        "204":
+          description: Medical record deleted
+        "404":
+          description: Medical record not found
+
   /vaccination-records:
     get:
       tags:
@@ -71,6 +141,59 @@ paths:
           description: Vaccination record created
         "400":
           description: Invalid input
+  /vaccination-records/{recordId}:
+    parameters:
+      - in: path
+        name: recordId
+        required: true
+        schema:
+          type: string
+    get:
+      tags:
+        - vaccinationRecords
+      summary: Get vaccination record by ID
+      operationId: getVaccinationRecordById
+      description: Retrieve a specific vaccination record by its ID
+      responses:
+        "200":
+          description: Vaccination record details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VaccinationRecord"
+        "404":
+          description: Vaccination record not found
+    put:
+      tags:
+        - vaccinationRecords
+      summary: Update a vaccination record
+      operationId: updateVaccinationRecord
+      description: Update a specific vaccination record by its ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VaccinationRecord"
+      responses:
+        "200":
+          description: Vaccination record updated
+        "400":
+          description: Invalid input
+        "404":
+          description: Vaccination record not found
+    delete:
+      tags:
+        - vaccinationRecords
+      summary: Delete a vaccination record
+      operationId: deleteVaccinationRecord
+      description: Remove a specific vaccination record by its ID
+      responses:
+        "204":
+          description: Vaccination record deleted
+        "404":
+          description: Vaccination record not found
+
   /lab-results:
     get:
       tags:
@@ -128,6 +251,18 @@ paths:
           description: Invalid input
         "404":
           description: Lab result not found
+    delete:
+      tags:
+        - labResults
+      summary: Delete a lab result
+      operationId: deleteLabResult
+      description: Remove a specific lab result by its ID
+      responses:
+        "204":
+          description: Lab result deleted
+        "404":
+          description: Lab result not found
+
   /allergy-records:
     get:
       tags:
@@ -144,6 +279,23 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/AllergyRecord"
+    post:
+      tags:
+        - allergyRecords
+      summary: Create a new allergy record
+      operationId: createAllergyRecord
+      description: Add a new allergy record
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AllergyRecord"
+      responses:
+        "201":
+          description: Allergy record created
+        "400":
+          description: Invalid input
   /allergy-records/{recordId}:
     parameters:
       - in: path
@@ -154,7 +306,7 @@ paths:
     get:
       tags:
         - allergyRecords
-      summary: Get an allergy record by ID
+      summary: Get allergy record by ID
       operationId: getAllergyRecordById
       description: Retrieve a specific allergy record by its ID
       responses:

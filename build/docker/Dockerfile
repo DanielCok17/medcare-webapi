@@ -28,7 +28,7 @@ COPY cmd/ cmd/
 COPY --from=api /local/ ./
 
 # ensure tests are passing
-# RUN CGO_ENABLED=0 GOOS=linux go test ./...
+RUN go test ./...
 
 # create executable - medcare-webapi-srv
 # we want to use scratch image so setting

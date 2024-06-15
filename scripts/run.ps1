@@ -38,7 +38,7 @@ switch ($command) {
     }
     "docker" {
         # docker build -t danielcok17/medcare-webapi:local-build -f ${ProjectRoot}/build/docker/Dockerfile .
-        docker build --no-cache -t danielcok17/medcare-webapi:local-build -f ${ProjectRoot}/build/docker/Dockerfile .
+        docker build -t danielcok17/medcare-webapi:local-build -f ${ProjectRoot}/build/docker/Dockerfile .
 
     }
     default {

@@ -3,292 +3,40 @@ package medcare
 import (
 	"net/http"
 
-	"github.com/DanielCok17/medcare-webapi/internal/db_service"
 	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
 )
 
-type implLabResultsAPI struct{}
-
-// LabResultsAPI interface definition
 type LabResultsAPI interface {
+	// internal registration of API routes
 	addRoutes(routerGroup *gin.RouterGroup)
+
+	// CreateLabResult - Saves new lab result
 	CreateLabResult(ctx *gin.Context)
+
+	// GetAllLabResults - Retrieves all lab results
 	GetAllLabResults(ctx *gin.Context)
+
+	// GetLabResultById - Retrieves a lab result by ID
 	GetLabResultById(ctx *gin.Context)
+
+	// UpdateLabResult - Updates a lab result
 	UpdateLabResult(ctx *gin.Context)
+
+	// DeleteLabResult - Deletes a lab result
 	DeleteLabResult(ctx *gin.Context)
 }
 
-// NewLabResultsAPI constructor
+// Partial implementation of LabResultsAPI - all functions must be implemented in add-on files
+type implLabResultsAPI struct{}
+
 func NewLabResultsAPI() LabResultsAPI {
 	return &implLabResultsAPI{}
 }
 
-// addRoutes implementation
-func (api *implLabResultsAPI) addRoutes(routerGroup *gin.RouterGroup) {
-	routerGroup.POST("/lab_results", api.CreateLabResult)
-	routerGroup.GET("/lab_results", api.GetAllLabResults)
-	routerGroup.GET("/lab_results/:recordId", api.GetLabResultById)
-	routerGroup.PUT("/lab_results/:recordId", api.UpdateLabResult)
-	routerGroup.DELETE("/lab_results/:recordId", api.DeleteLabResult)
-}
-
-// CreateLabResult implementation
-func (api *implLabResultsAPI) CreateLabResult(ctx *gin.Context) {
-	value, exists := ctx.Get("lab_result_db_service")
-	if !exists {
-		ctx.JSON(
-			http.StatusInternalServerError,
-			gin.H{
-				"status":  "Internal Server Error",
-				"message": "db not found",
-				"error":   "db not found",
-			})
-		return
-	}
-
-	db, ok := value.(db_service.DbService[LabResult])
-	if !ok {
-		ctx.JSON(
-			http.StatusInternalServerError,
-			gin.H{
-				"status":  "Internal Server Error",
-				"message": "db context is not of required type",
-				"error":   "cannot cast db context to db_service.DbService",
-			})
-		return
-	}
-
-	labResult := LabResult{}
-	err := ctx.BindJSON(&labResult)
-	if err != nil {
-		ctx.JSON(
-			http.StatusBadRequest,
-			gin.H{
-				"status":  "Bad Request",
-				"message": "Invalid request body",
-				"error":   err.Error(),
-			})
-		return
-	}
-
-	if labResult.Id == "" {
-		labResult.Id = uuid.New().String()
-	}
-
-	err = db.CreateDocument(ctx, labResult.Id, &labResult)
-
-	switch err {
-	case nil:
-		ctx.JSON(
-			http.StatusCreated,
-			labResult,
-		)
-	case db_service.ErrConflict:
-		ctx.JSON(
-			http.StatusConflict,
-			gin.H{
-				"status":  "Conflict",
-				"message": "Lab result already exists",
-				"error":   err.Error(),
-			},
-		)
-	default:
-		ctx.JSON(
-			http.StatusBadGateway,
-			gin.H{
-				"status":  "Bad Gateway",
-				"message": "Failed to create lab result in database",
-				"error":   err.Error(),
-			},
-		)
-	}
-}
-
-// GetAllLabResults implementation
-func (api *implLabResultsAPI) GetAllLabResults(ctx *gin.Context) {
-	value, exists := ctx.Get("lab_result_db_service")
-	if !exists {
-		ctx.JSON(
-			http.StatusInternalServerError,
-			gin.H{
-				"status":  "Internal Server Error",
-				"message": "db not found",
-				"error":   "db not found",
-			})
-		return
-	}
-
-	db, ok := value.(db_service.DbService[LabResult])
-	if !ok {
-		ctx.JSON(
-			http.StatusInternalServerError,
-			gin.H{
-				"status":  "Internal Server Error",
-				"message": "db context is not of required type",
-				"error":   "cannot cast db context to db_service.DbService",
-			})
-		return
-	}
-
-	records, err := db.FindAllDocuments(ctx)
-	if err != nil {
-		ctx.JSON(
-			http.StatusBadGateway,
-			gin.H{
-				"status":  "Bad Gateway",
-				"message": "Failed to fetch lab results from database",
-				"error":   err.Error(),
-			},
-		)
-		return
-	}
-
-	ctx.JSON(http.StatusOK, records)
-}
-
-// GetLabResultById implementation
-func (api *implLabResultsAPI) GetLabResultById(ctx *gin.Context) {
-	value, exists := ctx.Get("lab_result_db_service")
-	if !exists {
-		ctx.JSON(
-			http.StatusInternalServerError,
-			gin.H{
-				"status":  "Internal Server Error",
-				"message": "db not found",
-				"error":   "db not found",
-			})
-		return
-	}
-
-	db, ok := value.(db_service.DbService[LabResult])
-	if !ok {
-		ctx.JSON(
-			http.StatusInternalServerError,
-			gin.H{
-				"status":  "Internal Server Error",
-				"message": "db context is not of required type",
-				"error":   "cannot cast db context to db_service.DbService",
-			})
-		return
-	}
-
-	recordId := ctx.Param("recordId")
-	record, err := db.FindDocument(ctx, recordId)
-	if err != nil {
-		ctx.JSON(
-			http.StatusNotFound,
-			gin.H{
-				"status":  "Not Found",
-				"message": "Lab result not found",
-				"error":   err.Error(),
-			},
-		)
-		return
-	}
-
-	ctx.JSON(http.StatusOK, record)
-}
-
-// UpdateLabResult implementation
-func (api *implLabResultsAPI) UpdateLabResult(ctx *gin.Context) {
-	value, exists := ctx.Get("lab_result_db_service")
-	if !exists {
-		ctx.JSON(
-			http.StatusInternalServerError,
-			gin.H{
-				"status":  "Internal Server Error",
-				"message": "db not found",
-				"error":   "db not found",
-			})
-		return
-	}
-
-	db, ok := value.(db_service.DbService[LabResult])
-	if !ok {
-		ctx.JSON(
-			http.StatusInternalServerError,
-			gin.H{
-				"status":  "Internal Server Error",
-				"message": "db context is not of required type",
-				"error":   "cannot cast db context to db_service.DbService",
-			})
-		return
-	}
-
-	recordId := ctx.Param("recordId")
-	labResult := LabResult{}
-	err := ctx.BindJSON(&labResult)
-	if err != nil {
-		ctx.JSON(
-			http.StatusBadRequest,
-			gin.H{
-				"status":  "Bad Request",
-				"message": "Invalid request body",
-				"error":   err.Error(),
-			})
-		return
-	}
-
-	// Set the ID to the one from the URL parameter
-	labResult.Id = recordId
-
-	err = db.UpdateDocument(ctx, recordId, &labResult)
-	if err != nil {
-		ctx.JSON(
-			http.StatusNotFound,
-			gin.H{
-				"status":  "Not Found",
-				"message": "Lab result not found",
-				"error":   err.Error(),
-			},
-		)
-		return
-	}
-
-	ctx.JSON(http.StatusOK, labResult)
-}
-
-// DeleteLabResult implementation
-func (api *implLabResultsAPI) DeleteLabResult(ctx *gin.Context) {
-	value, exists := ctx.Get("lab_result_db_service")
-	if !exists {
-		ctx.JSON(
-			http.StatusInternalServerError,
-			gin.H{
-				"status":  "Internal Server Error",
-				"message": "db not found",
-				"error":   "db not found",
-			})
-		return
-	}
-
-	db, ok := value.(db_service.DbService[LabResult])
-	if !ok {
-		ctx.JSON(
-			http.StatusInternalServerError,
-			gin.H{
-				"status":  "Internal Server Error",
-				"message": "db context is not of required type",
-				"error":   "cannot cast db context to db_service.DbService",
-			})
-		return
-	}
-
-	recordId := ctx.Param("recordId")
-	err := db.DeleteDocument(ctx, recordId)
-	if err != nil {
-		ctx.JSON(
-			http.StatusNotFound,
-			gin.H{
-				"status":  "Not Found",
-				"message": "Lab result not found",
-				"error":   err.Error(),
-			},
-		)
-		return
-	}
-
-	ctx.Status(http.StatusNoContent)
+func (this *implLabResultsAPI) addRoutes(routerGroup *gin.RouterGroup) {
+	routerGroup.Handle(http.MethodPost, "/lab_results", this.CreateLabResult)
+	routerGroup.Handle(http.MethodGet, "/lab_results", this.GetAllLabResults)
+	routerGroup.Handle(http.MethodGet, "/lab_results/:recordId", this.GetLabResultById)
+	routerGroup.Handle(http.MethodPut, "/lab_results/:recordId", this.UpdateLabResult)
+	routerGroup.Handle(http.MethodDelete, "/lab_results/:recordId", this.DeleteLabResult)
 }
