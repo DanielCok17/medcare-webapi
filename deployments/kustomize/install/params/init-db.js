@@ -13,7 +13,7 @@ const retrySeconds = parseInt(process.env.RETRY_CONNECTION_SECONDS || "6") || 6;
 let connection;
 while (true) {
     try {
-        connection = new Mongo(`mongodb://mongo:27017`);
+        connection = new Mongo(`mongodb://${mongoHost}:${mongoPort}`);
         
         break;
     } catch (exception) {
