@@ -1,8 +1,8 @@
 const mongoHost = process.env.AMBULANCE_API_MONGODB_HOST
 const mongoPort = process.env.AMBULANCE_API_MONGODB_PORT
 
-// const mongoUser = process.env.AMBULANCE_API_MONGODB_USERNAME
-// const mongoPassword = process.env.AMBULANCE_API_MONGODB_PASSWORD
+const mongoUser = process.env.AMBULANCE_API_MONGODB_USERNAME
+const mongoPassword = process.env.AMBULANCE_API_MONGODB_PASSWORD
 
 const database = process.env.AMBULANCE_API_MONGODB_DATABASE
 const collections = process.env.AMBULANCE_API_MONGODB_COLLECTION.split(',')
@@ -13,7 +13,7 @@ const retrySeconds = parseInt(process.env.RETRY_CONNECTION_SECONDS || "6") || 6;
 let connection;
 while (true) {
     try {
-        connection = new Mongo(`mongodb://${mongoHost}:${mongoPort}`);
+        connection = new Mongo(`mongodb://${mongoUser}:${mongoPassword}@${mongoHost}:${mongoPort}`);
         
         break;
     } catch (exception) {
