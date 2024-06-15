@@ -13,8 +13,6 @@ configMapGenerator:
     literals:
       - database=medcare-db
       - collection=allergy_records:allergy_records,lab_results:lab_results,medical_records:medical_records,vaccination_records:vaccination_records
-      - username=root
-      - password=
 patches:
   - path: patches/webapi.deployment.yaml
     target:
