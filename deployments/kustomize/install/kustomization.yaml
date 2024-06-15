@@ -6,10 +6,10 @@ resources:
   - service.yaml
 
 configMapGenerator:
-  - name: medcare-webapi-mongodb-init
+  - name: medcare-ambulance-webapi-mongodb-init
     files:
       - params/init-db.js
-  - name: medcare-webapi-config
+  - name: medcare-ambulance-webapi-config
     literals:
       - database=medcare-db
       - collection=allergy_records:allergy_records,lab_results:lab_results,medical_records:medical_records,vaccination_records:vaccination_records
