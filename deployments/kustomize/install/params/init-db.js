@@ -7,13 +7,13 @@ const mongoPort = process.env.AMBULANCE_API_MONGODB_PORT
 const database = process.env.AMBULANCE_API_MONGODB_DATABASE
 const collections = process.env.AMBULANCE_API_MONGODB_COLLECTION.split(',')
 
-const retrySeconds = parseInt(process.env.RETRY_CONNECTION_SECONDS || "5") || 5;
+const retrySeconds = parseInt(process.env.RETRY_CONNECTION_SECONDS || "6") || 6;
 
 // try to connect to mongoDB until it is not available
 let connection;
 while (true) {
     try {
-        connection = new Mongo(`mongodb://${mongoHost}:${mongoPort}`);
+        connection = new Mongo(`mongodb://mongo:27017`);
         
         break;
     } catch (exception) {
