@@ -50,6 +50,7 @@ for (const collection of collections) {
     db[collectionName].createIndex({ "id": 1 });
 
     // Insert sample data specific to each collection if necessary
+    // trigger commit for flux
     let sampleData = [];
     if (collectionName === "allergy_records") {
         sampleData = [
